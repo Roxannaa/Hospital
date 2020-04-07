@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Medicos" EntityType="Model1.Store.Medicos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Pacientes" EntityType="Model1.Store.Pacientes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Habitaciones" EntityType="Model1.Store.Habitaciones" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Citas" EntityType="Model1.Store.Citas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Ingresos" EntityType="Model1.Store.Ingresos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Altas" EntityType="Model1.Store.Altas" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="MedicosCitas" Association="Model1.Store.MedicosCitas">
+      <End Role="Medicos" EntitySet="Medicos" />
+      <End Role="Citas" EntitySet="Citas" />
+    </AssociationSet>
+    <AssociationSet Name="HabitacionesIngresos" Association="Model1.Store.HabitacionesIngresos">
+      <End Role="Habitaciones" EntitySet="Habitaciones" />
+      <End Role="Ingresos" EntitySet="Ingresos" />
+    </AssociationSet>
+    <AssociationSet Name="PacientesIngresos" Association="Model1.Store.PacientesIngresos">
+      <End Role="Pacientes" EntitySet="Pacientes" />
+      <End Role="Ingresos" EntitySet="Ingresos" />
+    </AssociationSet>
+    <AssociationSet Name="IngresosAltas" Association="Model1.Store.IngresosAltas">
+      <End Role="Ingresos" EntitySet="Ingresos" />
+      <End Role="Altas" EntitySet="Altas" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Medicos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Exequatur" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Especialidad" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pacientes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Cedula" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Asegurado" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Habitaciones">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Numero" Type="int" Nullable="false" />
+    <Property Name="Tipo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Precioxdia" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Citas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Fecha" Type="datetime" Nullable="false" />
+    <Property Name="Hora" Type="time" Nullable="false" />
+    <Property Name="MedicosId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Ingresos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FechaIngreso" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HabitacionesId" Type="int" Nullable="false" />
+    <Property Name="PacientesId" Type="int" Nullable="false" />
+    <Property Name="Alta_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Altas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdIngreso" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaSalida" Type="datetime" Nullable="false" />
+    <Property Name="MontoPagar" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="MedicosCitas">
+    <End Role="Medicos" Type="Model1.Store.Medicos" Multiplicity="1" />
+    <End Role="Citas" Type="Model1.Store.Citas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medicos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Citas">
+        <PropertyRef Name="MedicosId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="HabitacionesIngresos">
+    <End Role="Habitaciones" Type="Model1.Store.Habitaciones" Multiplicity="1" />
+    <End Role="Ingresos" Type="Model1.Store.Ingresos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Habitaciones">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ingresos">
+        <PropertyRef Name="HabitacionesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PacientesIngresos">
+    <End Role="Pacientes" Type="Model1.Store.Pacientes" Multiplicity="1" />
+    <End Role="Ingresos" Type="Model1.Store.Ingresos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pacientes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ingresos">
+        <PropertyRef Name="PacientesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="IngresosAltas">
+    <End Role="Ingresos" Type="Model1.Store.Ingresos" Multiplicity="*" />
+    <End Role="Altas" Type="Model1.Store.Altas" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Altas">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ingresos">
+        <PropertyRef Name="Alta_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
